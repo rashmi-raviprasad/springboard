@@ -1,4 +1,3 @@
-object_info,rotation
 object_info,skyVersion
 object_info,run
 object_info,rerun
@@ -385,11 +384,11 @@ flags,flags_g
 flags,flags_r
 flags,flags_i
 flags,flags_z
-type,type_u
-type,type_g
-type,type_r
-type,type_i
-type,type_z
+types,type_u
+types,type_g
+types,type_r
+types,type_i
+types,type_z
 psf,probPSF_u
 psf,probPSF_g
 psf,probPSF_r
