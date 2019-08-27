@@ -63,13 +63,7 @@ for category, column in list(data_df):
     if category != 'rotation':
         assert data_df.loc[:, (category, column)].dtype != 'object'
     
-#Searching for outliers
-#fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2)
-#fig = plt.figure()
-#ax1 = fig.add_subplot(2, 2, 1)
-#ax2 = fig.add_subplot(2, 2, 2)
-#ax3 = fig.add_subplot(2, 2, 3)
-#ax4 = fig.add_subplot(2, 2, 4)
+#Searching for outliers and suspicious patterns.
 
 #Coordinates - ensuring cw and ccw galaxies are equally distributed across the sky
 plt.subplot(221)
@@ -109,7 +103,6 @@ plt.xlabel('Band (U or Z)')
 plt.ylabel('Polarization')
 #plt.show()
 
-#print(stokes[abs(stokes['q_u']) > 5])
 plt.tick_params(labelsize=8)
 plt.tight_layout()
 plt.show()
