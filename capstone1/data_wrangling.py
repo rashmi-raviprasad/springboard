@@ -107,8 +107,34 @@ plt.tick_params(labelsize=8)
 plt.tight_layout()
 plt.show()
 
+#Removing the two outliers that were identified from the main dataset.
+max_outlier = data_df['stokes']['q_u'] == data_df['stokes']['q_u'].max()
+min_outlier = data_df['stokes']['q_u'] == data_df['stokes']['q_u'].min()
+data_df.drop(data_df[max_outlier | min_outlier].index, inplace=True)
 
+#Updating individual dataframes.
+coordinates = subset_df(data_df, 'coordinates')
+devaucouleurs = subset_df(data_df, 'devaucouleurs')
+exponential = subset_df(data_df, 'exponential')
+extinction = subset_df(data_df, 'extinction')
+fiber = subset_df(data_df, 'fiber')
+flags = subset_df(data_df, 'flags')
+isophotal = subset_df(data_df, 'isophotal')
+m = subset_df(data_df, 'm')
+model = subset_df(data_df, 'model')
+object_info = subset_df(data_df, 'object_info')
+petro = subset_df(data_df, 'petro')
+position = subset_df(data_df, 'position')
+prof = subset_df(data_df, 'prof')
+psf = subset_df(data_df, 'psf')
+signal = subset_df(data_df, 'signal')
+sky = subset_df(data_df, 'sky')
+stokes = subset_df(data_df, 'stokes')
+target = subset_df(data_df, 'target')
+texture = subset_df(data_df, 'texture')
+types = subset_df(data_df, 'types')
 
+#Our data is now clean and ready for analysis!
 
 
 
