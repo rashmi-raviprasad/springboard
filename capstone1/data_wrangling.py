@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+plt.rcParams.update({'font.size': 8})
 import seaborn as sns
 sns.set()
 
@@ -63,46 +64,55 @@ for category, column in list(data_df):
         assert data_df.loc[:, (category, column)].dtype != 'object'
     
 #Searching for outliers
-
 #fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2)
+#fig = plt.figure()
+#ax1 = fig.add_subplot(2, 2, 1)
+#ax2 = fig.add_subplot(2, 2, 2)
+#ax3 = fig.add_subplot(2, 2, 3)
+#ax4 = fig.add_subplot(2, 2, 4)
 
 #Coordinates - ensuring cw and ccw galaxies are equally distributed across the sky
-#ax1 = sns.scatterplot(x='ra', y='dec', data=coordinates, hue='rotation', alpha=0.7, palette='dark', s=3)
-#ax1.set_title('Coordinates')
-#ax1.set_xlabel('Right ascension (RA) (degrees)')
-#ax1.set_ylabel('Declination (Dec) (degrees)')
+plt.subplot(221)
+sns.scatterplot(x='ra', y='dec', data=coordinates, hue='rotation', alpha=0.7, palette='dark', s=3)
+plt.title('Coordinates')
+plt.xlabel('Right ascension (RA) (degrees)')
+plt.ylabel('Declination (Dec) (degrees)')
 #plt.show()
 
 
 #Petrosian - checking for outliers in magnitude across U & Z bands
-#ax2 = sns.boxplot(x='variable', y='value', hue='rotation', 
-#           data=pd.melt(petro[['rotation', 'petroMag_u', 'petroMag_z']], id_vars=['rotation']))
-#ax2.set_title('Petrosian Magnitude (U & Z)')
-#ax2.set_xlabel('Band (U or Z)')
-#ax2.set_ylabel('Magnitude (magnitudes)')
+plt.subplot(222)
+sns.boxplot(x='variable', y='value', hue='rotation', 
+           data=pd.melt(petro[['rotation', 'petroMag_u', 'petroMag_z']], id_vars=['rotation']))
+plt.title('Petrosian Magnitude (U & Z)')
+plt.xlabel('Band (U or Z)')
+plt.ylabel('Magnitude (magnitudes)')
 #plt.show()
 
 
 #Sky - checking for outliers in flux across U & Z bands
-#ax3 = sns.boxplot(x='variable', y='value', hue='rotation', 
-#           data=pd.melt(sky[['rotation', 'sky_u', 'sky_z']], id_vars=['rotation']))
-#ax3.set(yscale='log')
-#ax3.set_title('Sky Flux (U & Z)')
-#ax3.set_xlabel('Band (U or Z)')
-#ax3.set_ylabel('Flux')
+plt.subplot(223)
+sns.boxplot(x='variable', y='value', hue='rotation', 
+           data=pd.melt(sky[['rotation', 'sky_u', 'sky_z']], id_vars=['rotation']))
+plt.yscale('log')
+plt.title('Sky Flux (U & Z)')
+plt.xlabel('Band (U or Z)')
+plt.ylabel('Flux')
 #plt.show()
 
 #Stokes - checking for outliers in polarization values across U & Z bands
-#ax4 = sns.boxplot(x='variable', y='value', hue='rotation', 
-#           data=pd.melt(stokes[['rotation', 'q_u', 'q_z']], id_vars=['rotation']))
-#ax4.set_title('Stokes Q Parameter (U & Z)')
-#ax4.set_xlabel('Band (U or Z)')
-#ax4.set_ylabel('Polarization')
+plt.subplot(224)
+sns.boxplot(x='variable', y='value', hue='rotation', 
+           data=pd.melt(stokes[['rotation', 'q_u', 'q_z']], id_vars=['rotation']))
+plt.title('Stokes Q Parameter (U & Z)')
+plt.xlabel('Band (U or Z)')
+plt.ylabel('Polarization')
 #plt.show()
 
-print(stokes[abs(stokes['q_u']) > 5])
-
-#plt.show()
+#print(stokes[abs(stokes['q_u']) > 5])
+plt.tick_params(labelsize=8)
+plt.tight_layout()
+plt.show()
 
 
 
