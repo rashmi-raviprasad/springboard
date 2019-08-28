@@ -63,46 +63,15 @@ for category, column in list(data_df):
     if category != 'rotation':
         assert data_df.loc[:, (category, column)].dtype != 'object'
     
-#Searching for outliers and suspicious patterns.
-
-#Coordinates - ensuring cw and ccw galaxies are equally distributed across the sky
-plt.subplot(221)
-sns.scatterplot(x='ra', y='dec', data=coordinates, hue='rotation', alpha=0.7, palette='dark', s=3)
-plt.title('Coordinates')
-plt.xlabel('Right ascension (RA) (degrees)')
-plt.ylabel('Declination (Dec) (degrees)')
-#plt.show()
-
-
-#Petrosian - checking for outliers in magnitude across U & Z bands
-plt.subplot(222)
-sns.boxplot(x='variable', y='value', hue='rotation', 
-           data=pd.melt(petro[['rotation', 'petroMag_u', 'petroMag_z']], id_vars=['rotation']))
-plt.title('Petrosian Magnitude (U & Z)')
-plt.xlabel('Band (U or Z)')
-plt.ylabel('Magnitude (magnitudes)')
-#plt.show()
-
-
-#Sky - checking for outliers in flux across U & Z bands
-plt.subplot(223)
-sns.boxplot(x='variable', y='value', hue='rotation', 
-           data=pd.melt(sky[['rotation', 'sky_u', 'sky_z']], id_vars=['rotation']))
-plt.yscale('log')
-plt.title('Sky Flux (U & Z)')
-plt.xlabel('Band (U or Z)')
-plt.ylabel('Flux')
-#plt.show()
-
-#Stokes - checking for outliers in polarization values across U & Z bands
-plt.subplot(224)
+#Searching for outliers and suspicious patterns. In this case, checking the Stokes Q value
+#across U & Z bands
 sns.boxplot(x='variable', y='value', hue='rotation', 
            data=pd.melt(stokes[['rotation', 'q_u', 'q_z']], id_vars=['rotation']))
 plt.title('Stokes Q Parameter (U & Z)')
 plt.xlabel('Band (U or Z)')
 plt.ylabel('Polarization')
-#plt.show()
-
+plt.text(x=-0.04, y=-8.2, s='outlier')
+plt.text(x=-0.04, y=7.5, s='outlier')
 plt.tick_params(labelsize=8)
 plt.tight_layout()
 plt.show()
