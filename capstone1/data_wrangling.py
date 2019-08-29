@@ -1,7 +1,6 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-plt.rcParams.update({'font.size': 8})
 import seaborn as sns
 sns.set()
 
@@ -70,16 +69,16 @@ sns.boxplot(x='variable', y='value', hue='rotation',
 plt.title('Stokes Q Parameter (U & Z)')
 plt.xlabel('Band (U or Z)')
 plt.ylabel('Polarization')
-plt.text(x=-0.04, y=-8.2, s='outlier')
-plt.text(x=-0.04, y=7.5, s='outlier')
-plt.tick_params(labelsize=8)
+plt.text(x=-0.01, y=-8.2, s='outlier', fontsize=9)
+plt.text(x=-0.01, y=7.5, s='outlier', fontsize=9)
+plt.tick_params(labelsize=9)
 plt.tight_layout()
 plt.show()
 
-#Removing the two outliers that were identified from the main dataset.
-max_outlier = data_df['stokes']['q_u'] == data_df['stokes']['q_u'].max()
-min_outlier = data_df['stokes']['q_u'] == data_df['stokes']['q_u'].min()
-data_df.drop(data_df[max_outlier | min_outlier].index, inplace=True)
+#As it turns out, this dataset uses value of -9999.00 to denote missing entries.
+#Replacing all instances of -9999.00 with NaN.
+data_df.replace(-9999.00, np.nan, inplace=True)
+
 
 #Updating individual dataframes.
 coordinates = subset_df(data_df, 'coordinates')
@@ -103,8 +102,29 @@ target = subset_df(data_df, 'target')
 texture = subset_df(data_df, 'texture')
 types = subset_df(data_df, 'types')
 
-#Our data is now clean and ready for analysis!
+#Our data is now clean and ready for analysis! We can save these as csv files locally
+#so we do not have to run this procedure every time we need to perform analysis.
 
+coordinates.to_csv('coordinates.csv')
+devaucouleurs.to_csv('devaucouleurs.csv')
+exponential.to_csv('exponential.csv')
+extinction.to_csv('extinction.csv')
+fiber.to_csv('fiber.csv')
+flags.to_csv('flags.csv')
+isophotal.to_csv('isophotal.csv')
+m.to_csv('m.csv')
+model.to_csv('model.csv')
+object_info.to_csv('object_info.csv')
+petro.to_csv('petro.csv')
+position.to_csv('position.csv')
+prof.to_csv('prof.csv')
+psf.to_csv('psf.csv')
+signal.to_csv('signal.csv')
+sky.to_csv('sky.csv')
+stokes.to_csv('stokes.csv')
+target.to_csv('target.csv')
+texture.to_csv('texture.csv')
+types.to_csv('types.csv')
 
 
 
