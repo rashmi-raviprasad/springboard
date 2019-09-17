@@ -26,13 +26,13 @@ exploring the data, and getting acquainted with the 3 tables. */
 
 /* Q1: Some of the facilities charge a fee to members, but some do not.
 Please list the names of the facilities that do. */
-SELECT "name" AS paid_facilities
+SELECT name AS paid_facilities
 	FROM Facilities
 	WHERE membercost > 0
 
 
 /* Q2: How many facilities do not charge a fee to members? */
-SELECT COUNT("name") AS num_free_facilities
+SELECT COUNT(name) AS num_free_facilities
 	FROM Facilities
 	WHERE membercost = 0
 
@@ -42,7 +42,7 @@ where the fee is less than 20% of the facility's monthly maintenance cost?
 Return the facid, facility name, member cost, and monthly maintenance of the
 facilities in question. */
 SELECT facid AS facility_ID,
-		"name" AS facility_name,
+		name AS facility_name,
 		membercost AS member_cost,
 		monthlymaintenance AS monthly_maintenance
 	FROM Facilities
@@ -67,7 +67,7 @@ SELECT *
 'cheap' or 'expensive', depending on if their monthly maintenance cost is
 more than $100? Return the name and monthly maintenance of the facilities
 in question. */
-SELECT "name" AS facility_name,
+SELECT name AS facility_name,
 		monthlymaintenance AS facility_monthly_maint,
 		CASE WHEN monthlymaintenance < 100 THEN 'cheap'
 			ELSE 'expensive' END AS cost
@@ -79,7 +79,7 @@ who signed up. Do not use the LIMIT clause for your solution. */
 SELECT firstname AS first_name,
 		surname AS last_name
 		FROM Members
-		WHERE memid = (SELECT MAX(memid) FROM Members)
+		WHERE joindate = (SELECT MAX(joindate) FROM Members)
 
 
 /* Q7: How can you produce a list of all members who have used a tennis court?
@@ -87,7 +87,7 @@ Include in your output the name of the court, and the name of the member
 formatted as a single column. Ensure no duplicate data, and order by
 the member name. */
 SELECT Facilities.name AS court_name,
-		Members.firstname + ' ' + Members.surname AS member_name
+		CONCAT(Members.firstname, ' ', Members.surname) AS member_name
 		FROM Bookings
 		JOIN Members 
 			ON Members.memid = Bookings.memid
@@ -95,8 +95,7 @@ SELECT Facilities.name AS court_name,
 		JOIN Facilities
 			ON Facilities.facid = Bookings.facid
 			AND Facilities.name LIKE 'Tennis%' 
-			--If we are including Table Tennis rooms, we can specify '%Tennis%' instead.
-		GROUP BY Facilities.name, Members.firstname + ' ' + Members.surname
+		GROUP BY 1, 2
 		ORDER BY 2
 
 
@@ -107,7 +106,7 @@ the guest user's ID is always 0. Include in your output the name of the
 facility, the name of the member formatted as a single column, and the cost.
 Order by descending cost, and do not use any subqueries. */
 SELECT Facilities.name AS facility_name,
-		Members.firstname + ' ' + Members.surname AS member_name,
+		CONCAT(Members.firstname, ' ', Members.surname) AS member_name,
 		CASE WHEN Bookings.memid = 0 THEN Facilities.guestcost * Bookings.slots
 			ELSE Facilities.membercost * Bookings.slots END AS booking_cost
 		FROM Bookings
@@ -125,7 +124,7 @@ SELECT Facilities.name AS facility_name,
 SELECT *
 FROM 
 	( SELECT Facilities.name AS facility_name,
-			Members.firstname + ' ' + Members.surname AS member_name,
+     		CONCAT(Members.firstname, ' ', Members.surname) AS member_name,
 			CASE WHEN Bookings.memid = 0 THEN Facilities.guestcost * Bookings.slots
 				ELSE Facilities.membercost * Bookings.slots END AS booking_cost
 			FROM Bookings
