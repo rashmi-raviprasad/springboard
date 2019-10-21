@@ -16,11 +16,11 @@ def subset_df(df, group):
 
 URL = 'http://vfacstaff.ltu.edu/lshamir/data/assym/p_all_full.csv'
 df = pd.read_csv(URL)
-#FILE_LOC = 'data.csv
+#FILE_LOC = 'data/data.csv
 #df = pd.read_csv(FILE_LOC, index_col=0)
 
 #Dataset has 455 columns, so we need to group them into categories to make our analysis manageable.
-col_names = pd.read_csv('col_names.csv', names=['category', 'col_name'])
+col_names = pd.read_csv('data/col_names.csv', names=['category', 'col_name'])
 col_groups = col_names.groupby('category')['col_name'].apply(list).to_dict()
 
 #Constructing a new dataframe with multi-level columns corresponding to the categories specified above.
@@ -137,26 +137,26 @@ types = subset_df(data_df, 'types')
 
 #Our data is now clean and ready for analysis! We can save these as csv files locally
 #so we do not have to run this procedure every time we need to perform analysis.
-coordinates.to_csv('coordinates.csv')
-devaucouleurs.to_csv('devaucouleurs.csv')
-exponential.to_csv('exponential.csv')
-extinction.to_csv('extinction.csv')
-fiber.to_csv('fiber.csv')
-flags.to_csv('flags.csv')
-isophotal.to_csv('isophotal.csv')
-m.to_csv('m.csv')
-model.to_csv('model.csv')
-object_info.to_csv('object_info.csv')
-petro.to_csv('petro.csv')
-position.to_csv('position.csv')
-prof.to_csv('prof.csv')
-psf.to_csv('psf.csv')
-signal.to_csv('signal.csv')
-sky.to_csv('sky.csv')
-stokes.to_csv('stokes.csv')
-target.to_csv('target.csv')
-texture.to_csv('texture.csv')
-types.to_csv('types.csv')
+coordinates.to_csv('data/coordinates.csv')
+devaucouleurs.to_csv('data/devaucouleurs.csv')
+exponential.to_csv('data/exponential.csv')
+extinction.to_csv('data/extinction.csv')
+fiber.to_csv('data/fiber.csv')
+flags.to_csv('data/flags.csv')
+isophotal.to_csv('data/isophotal.csv')
+m.to_csv('data/m.csv')
+model.to_csv('data/model.csv')
+object_info.to_csv('data/object_info.csv')
+petro.to_csv('data/petro.csv')
+position.to_csv('data/position.csv')
+prof.to_csv('data/prof.csv')
+psf.to_csv('data/psf.csv')
+signal.to_csv('data/signal.csv')
+sky.to_csv('data/sky.csv')
+stokes.to_csv('data/stokes.csv')
+target.to_csv('data/target.csv')
+texture.to_csv('data/texture.csv')
+types.to_csv('data/types.csv')
 
 
 
