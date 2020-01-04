@@ -1,10 +1,11 @@
 import os
 import cv2
-import math
 import numpy as np
 import matplotlib.pyplot as plt
-from multiprocessing import Process
 
+#Defining a class which has as attributes the images and annotations
+#of each cat picture. Member functions will be used to perform
+#the preprocessing.
 class CatPic:
     def __init__(self, name):
         '''
@@ -177,6 +178,9 @@ class CatPic:
         cv2.imwrite(filename, cv2.cvtColor(self.cropped_image, cv2.COLOR_RGB2BGR))
 
 def run(file_directory):
+    '''
+    Cleans up all cat images in a given directory
+    '''
     files = []
     for file in os.listdir(file_directory):
         if file.endswith('.jpg'):
@@ -211,6 +215,9 @@ def run(file_directory):
 if __name__ == '__main__':
     DATASET = 'cat_dataset/'
     folders = []
+    #Cat pictures are divided into folders that begin with 'CAT'
+    #so we will loop through each folder and perform the cleaning
+    #algorithm on their contents one at a time.
     for file in os.listdir(DATASET):
         if file.startswith('CAT'):
             folders.append(file)
@@ -218,7 +225,7 @@ if __name__ == '__main__':
     for folder in folders:
         try:
             pic_directory = DATASET + folder + '/'
-            Process(target=run, args=(pic_directory,)).start()
+            run(pic_directory)
         except:
             print(folder)
             continue
