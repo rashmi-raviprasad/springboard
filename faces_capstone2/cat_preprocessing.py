@@ -135,41 +135,6 @@ class CatPic:
         new_x_min, new_x_max = bbox_x_min + max_padding, bbox_x_max + max_padding
         self.cropped_image = pad_image[new_y_min:new_y_max, new_x_min:new_x_max]
         
-        
-    def show_orig(self, show_points=False):
-        '''
-        Displays raw image with option of showing raw annotations
-        '''
-        plt.imshow(self.image)
-        if show_points:
-            plt.plot(self.x_l_eye, self.y_l_eye, 'bo')
-            plt.plot(self.x_r_eye, self.y_r_eye, 'bo')
-            plt.plot(self.x_mouth, self.y_mouth, 'bo')
-            plt.plot(self.x_l_ear1, self.y_l_ear1, 'bo')
-            plt.plot(self.x_l_ear2, self.y_l_ear2, 'bo')
-            plt.plot(self.x_l_ear3, self.y_l_ear3, 'bo')
-            plt.plot(self.x_r_ear1, self.y_r_ear1, 'bo')
-            plt.plot(self.x_r_ear2, self.y_r_ear2, 'bo')
-            plt.plot(self.x_r_ear3, self.y_r_ear3, 'bo')
-        plt.title('Orig Cat # ' + self.name)
-    
-    def plot_pic(self, show_points=False):
-        '''
-        Displays processed image with option of showing rotated annotations
-        '''
-        plt.imshow(self.cropped_image)
-        if show_points:
-            plt.plot(self.rot_x_l_eye, self.rot_y_l_eye, 'bo')
-            plt.plot(self.rot_x_r_eye, self.rot_y_r_eye, 'bo')
-            plt.plot(self.rot_x_mouth, self.rot_y_mouth, 'bo')
-            plt.plot(self.rot_x_l_ear1, self.rot_y_l_ear1, 'bo')
-            plt.plot(self.rot_x_l_ear2, self.rot_y_l_ear2, 'bo')
-            plt.plot(self.rot_x_l_ear3, self.rot_y_l_ear3, 'bo')
-            plt.plot(self.rot_x_r_ear1, self.rot_y_r_ear1, 'bo')
-            plt.plot(self.rot_x_r_ear2, self.rot_y_r_ear2, 'bo')
-            plt.plot(self.rot_x_r_ear3, self.rot_y_r_ear3, 'bo')
-        plt.title('Processed Cat # ' + self.name)
-        
     def save_to_file(self, directory):
         '''
         Saves processed image to file in jpg format
