@@ -1,9 +1,5 @@
 import numpy as np
-import dash
-import dash_core_components as dcc
-import dash_html_components as html
-from dash.dependencies import Input, Output
-
+import streamlit as st
 from keras.models import load_model, Model, Sequential
 from keras.layers import Activation, Input, Flatten, Reshape
 from keras.layers.convolutional import Conv2DTranspose
@@ -12,6 +8,7 @@ from keras import backend as K
 K.set_image_data_format('channels_last')
 import keras.backend.tensorflow_backend as tb
 tb._SYMBOLIC_SCOPE.value = True
+
 
 MODEL_FN = 'decoder_test.h5'
 BATCH_SIZE = 32
@@ -41,26 +38,12 @@ def get_new_face(new_params):
     new_face = (pred_face * 255.0).astype(np.uint8)
     return new_face
 
-app = dash.Dash()
+new_params = np.zeros(N_COMPONENTS)
+image_location = st.empty()
+for i, evec in enumerate(eigvecs):
+    label = 'Component # %d' % (i+1)
+    new_params[i] = st.slider(label=label, min_value=-5.0, max_value=5.0, value=0.0, format='%.2f')
 
-colors = {
-    'background': '#111111',
-    'text': '#7FDBFF'
-}
-app.layout = html.Div(style={'backgroundColor': colors['background']}, children=[
-    html.H1(
-        children='Hello Dash',
-        style={
-            'textAlign': 'center',
-            'color': colors['text']
-        }
-    ),
-    html.Div(children='Dash: A web application framework for Python.', style={
-        'textAlign': 'center',
-        'color': colors['text']
-    })
-])
+face = get_new_face(new_params)
+image_location.image(face)
 
-
-if __name__ == '__main__':
-    app.run_server(debug=True)
