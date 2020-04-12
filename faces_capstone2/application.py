@@ -22,7 +22,7 @@ tb._SYMBOLIC_SCOPE.value = True
 MODEL_FN = 'decoder_test.h5'
 BATCH_SIZE = 32
 N_COMPONENTS = 100
-N_IMAGES = 200
+N_IMAGES = 500
 
 X = np.arange(N_IMAGES)
 X = np.array(X)
