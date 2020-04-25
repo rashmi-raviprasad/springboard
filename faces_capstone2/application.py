@@ -19,17 +19,17 @@ K.set_image_data_format('channels_last')
 import keras.backend.tensorflow_backend as tb
 tb._SYMBOLIC_SCOPE.value = True
 
-MODEL_FN = 'decoder_test.h5'
+MODEL_FN = 'decoder_25c.h5'
 BATCH_SIZE = 32
-N_COMPONENTS = 100
-N_IMAGES = 500
+N_COMPONENTS = 25
+N_IMAGES = 200
 
 X = np.arange(N_IMAGES)
 X = np.array(X)
 
 model = load_model(MODEL_FN)
-decoder = K.function(model.get_layer('reshape_1').input, model.layers[-1].output)
-encoder = Model(inputs=model.input, outputs=model.get_layer('flatten_1').output)
+decoder = K.function([model.get_layer('decoder_input').input, K.learning_phase()], model.layers[-1].output)
+encoder = Model(inputs=model.input, outputs=model.get_layer('encoder_output').output)
 
 encoded = encoder.predict(X, batch_size=BATCH_SIZE)
 component_mean = np.mean(encoded, axis=0)
@@ -48,7 +48,7 @@ def numpy_to_b64(array):
     return b64_img
 
 FACE_WIDTH = '30%'
-N_SLIDER_COLS = 4
+N_SLIDER_COLS = 1
 N_SLIDER_ROWS = 25
 SLIDER_WIDTH = '20%'
 #SLIDER_HEIGHT = W/E
@@ -56,10 +56,7 @@ SLIDER_MIN = -3.0
 SLIDER_MAX = 3.0
 INITIAL_VAL = 0
 SLIDER_STEP = 0.01
-colors = {
-    'background': '#111111',
-    'text': '#7FDBFF'
-}
+colors = {'background': '#111111', 'text': '#7FDBFF'}
 FACE_STYLE = {'width':FACE_WIDTH, 'display':'inline-block', 'margin-left':'auto', 'margin-right':'auto'}
 COLUMN_STYLE = {'width':SLIDER_WIDTH, 'display':'inline-block', 'margin-left':20}
 TEXT_STYLE = {'font-family':'sans-serif', 'color':colors['text'], 'text-align':'center', 'margin':'auto'}
@@ -77,12 +74,10 @@ app.config.suppress_callback_exceptions = True
 app.layout = html.Div(style={'backgroundColor': colors['background']}, children=[
     html.H1(
         children='Face Generator',
-        style=TEXT_STYLE
-    ),
+        style=TEXT_STYLE),
     html.Div(children=' ', style={
         'textAlign': 'center',
-        'color': colors['text']
-    }),
+        'color': colors['text']}),
     (
     #where face and controls go
     html.Div([
@@ -111,12 +106,14 @@ def create_sliders(id):
     return slider_cols
 
 input_sliders = []
+state_sliders = []
 output_sliders = []
 slider_vals = {}
 for i in range(N_COMPONENTS):
     slider_id = 'component-{}'.format(i+1)
     slider_vals[slider_id] = INITIAL_VAL
     input_sliders.append(Input(slider_id, 'value'))
+    state_sliders.append(State(slider_id, 'value'))
     output_sliders.append(Output(slider_id, 'value'))
 
 @app.callback((Output('face', 'src')), input_sliders)
@@ -129,13 +126,14 @@ def get_new_face(*args):
             slider_vals[triggered_id] = triggered_val
     except:
         low_dim = np.expand_dims(component_mean, axis=0)
-        default_face = decoder(low_dim)[0]
+        default_face = decoder([low_dim, 0])[0]
         default_face = (default_face * 255.0).astype(np.uint8)
         figure = numpy_to_b64(default_face)
         src = 'data:image/png;base64,{}'.format(figure)
-    low_dim = component_mean + np.dot(eigvecs, (list(slider_vals.values()) * eigvals).T).T
+    #low_dim = component_mean + np.dot(eigvecs, (list(slider_vals.values()) * eigvals).T).T
+    low_dim = component_mean + list(slider_vals.values()) * component_std
     low_dim = np.expand_dims(low_dim, axis=0)
-    pred_face = decoder(low_dim)[0]
+    pred_face = decoder([low_dim, 0])[0]
     new_face = (pred_face * 255.0).astype(np.uint8)
     figure = numpy_to_b64(new_face)
     src = 'data:image/png;base64,{}'.format(figure)
@@ -145,10 +143,9 @@ def get_new_face(*args):
 def random_reset(n_clicks, value):
     if n_clicks > 0:
         if value == 'randomize':
-            return list(np.random.randn(N_COMPONENTS))
+            return list(np.clip(np.random.randn(N_COMPONENTS), -3.0, 3.0))
         elif value == 'reset':
             return [0]*N_COMPONENTS
         
-
 if __name__ == '__main__':
     app.run_server(debug=True)
