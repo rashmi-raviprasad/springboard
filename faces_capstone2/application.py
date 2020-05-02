@@ -75,7 +75,8 @@ SLIDER_MAX = 3.0
 INITIAL_VAL = 0
 SLIDER_STEP = 0.01
 colors = {'background': '#D0CCD0', 'text': '#420039'}
-font_family = 'Trebuchet MS'
+#font_family = 'Trebuchet MS'
+font_family = 'Frutiger, Frutiger Linotype, Univers, Calibri, Gill Sans, Gill Sans MT, Myriad Pro, Myriad, DejaVu Sans Condensed, Liberation Sans, Nimbus Sans L, Tahoma, Geneva, Helvetica Neue, Helvetica, Arial, sans-serif'
 FACE_STYLE = {'width':FACE_WIDTH, 'display':'inline-block', 'margin-left':'25%', 'margin-right':'25%', 'margin-top':10, 'justify-content':'center', 'align-items':'center'}
 COLUMN_STYLE = {'width':COLUMN_WIDTH, 'display':'inline-block', 'margin':'auto', 'justify-content':'center', 'align-items':'center'}
 SLIDER_STYLE = {'width':SLIDER_WIDTH, 'display':'inline-block', 'margin-left':'5%', 'margin-right':'3%', 'justify-content':'center', 'align-items':'center'}
@@ -88,10 +89,12 @@ FACE_SLIDER_MARKS = {1:{'label':'Cats 1-100',
                         'style':{'font-family':font_family, 
                                 'color':colors['text'], 
                                 'margin-left':0}}, 
+                    25:{'label':''}, 50:{'label':''}, 75:{'label':''},
                     101:{'label':'Humans 101-200', 
                         'style':{'font-family':font_family, 
                                 'color':colors['text'], 
-                                'justify-content':'right'}}}
+                                'justify-content':'right'}},
+                    125:{'label':''}, 150:{'label':''}, 175:{'label':''}, 200:{'label':''}}
 PROJECT_DESCRIPTION = ['''Welcome to the human/cat hybrid face generator! The purpose of this app is to
                     generate unique faces with combined features from both human and cat faces.
                     These features were automatically learned by a neural network and may not have
